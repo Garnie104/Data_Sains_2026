@@ -1,0 +1,4 @@
+city,n_segments,hot_spots_p05,hot_spots_p01,hot_spots_p05_only,cold_spots_p05,cold_spots_p01,cold_spots_p05_only,not_significant,pct_significant
+Semarang,924,116,47,69,222,117,105,586,36.6
+Bandung,2583,392,170,222,518,330,188,1673,35.2
+Jakarta,13201,2063,1037,1026,2644,1607,1037,8494,35.7
