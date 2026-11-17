@@ -1,0 +1,2 @@
+Laporan yang dibuat harus memiliki struktur data, EDA, pre processing (cleaning, validation, input, dll (semua yg dibahas dari 1 - 7)), jangan paksa segmentasi jika bukan data image, sesuaikan dengan dataset yang dipakai. Gunakan Slide 1 - 7, slide 6 ada one hot encoding jangan lupa dipakai, temukan outlier, tentukan korelasi, data aapa aja yg masuk di korelasi. DL seminggu. 
+Presentasi di mulai tanggal 20 ( harus buat janjian sendiri)
