@@ -1,7 +1,5 @@
-# TUGAS BESAR DATA SAINS (PENGGANTI UTS)
-## STRUKTUR DATA, EDA, DAN DATA PRE-PROCESSING DATASET UK ROAD SAFETY 2025
-
-Tema: Transportation
+# TUGAS BESAR DATA SAINS
+## STRUKTUR DATA, EXPLORATORY DATA ANALYSIS, DAN DATA PRE-PROCESSING DATASET UK ROAD SAFETY 2025
 
 Disusun oleh:
 - Maheswara Ariq Athallah (101032300050)
@@ -23,7 +21,7 @@ Dataset *UK Road Safety Statistics* tahun 2025 terdiri dari 3 tabel CSV dan 1 ka
 
 - **Relasi:** Seluruh 101.525 kejadian di tabel *Collision* cocok **100%** dengan tabel *Vehicle* dan *Casualty* melalui `collision_index`.
 - **Kode Khusus:** Nilai **`-1`** pada dataset berarti *data kosong / tidak tersedia*.
-- **Penyesuaian Tipe Data:** Dataset berbentuk **data tabel (tabular)**, sehingga teknik data citra (*Image Segmentation*) tidak diterapkan. Tahap *Modeling / Machine Learning* belum dilakukan (disiapkan untuk UAS).
+- **Penyesuaian Tipe Data:** Dataset berbentuk **data tabel (tabular)**, sehingga teknik data citra (*Image Segmentation*) tidak diterapkan.
 
 ---
 
