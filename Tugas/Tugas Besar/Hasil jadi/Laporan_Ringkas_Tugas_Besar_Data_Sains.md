@@ -39,7 +39,7 @@ Dari total **99 kolom asli** yang tersebar di ketiga tabel (44 di *Collision*, 3
 2. **Redundan dan rawan kebocoran data (*data leakage*):** Misalnya `enhanced_severity_collision` (13,47% kosong dan isinya mengulang `collision_severity`) serta `age_band_of_driver` (sudah diwakili `age_of_driver`).
 3. **Terlalu spesifik atau hanya label kode wilayah:** Seperti `collision_ref_no`, ribuan kode wilayah kecil (`lsoa`), dan merek kendaraan (`generic_make_model` yang punya 777 variasi).
 
-**Catatan Khusus Tabel *Casualty*:** Tabel *Casualty* berisi rincian profil tiap individu korban (peran korban sebagai pengemudi/penumpang/pejalan kaki, usia, jenis kelamin, tingkat luka per orang, hingga posisi di kendaraan/trotoar). Pada proyek ini, tabel *Casualty* **tetap digunakan** pada tahap Struktur Data (verifikasi 127.883 baris & 100% kecocokan `collision_index`) dan tahap EDA *Outlier* (fitur `age_of_casualty` pada Tabel 3), namun **tidak digabungkan ke dataset akhir *Pre-processing***. Alasannya, fokus utama analisis adalah per satu kejadian kecelakaan (101.525 baris); jika digabung langsung dengan baris individu korban, satu kecelakaan dengan banyak korban akan terhitung berulang kali, sedangkan total korban dan tingkat keparahannya sudah terwakili oleh `number_of_casualties` dan `collision_severity` di tabel *Collision*.
+Tabel *Casualty* berisi rincian profil tiap individu korban (peran korban sebagai pengemudi/penumpang/pejalan kaki, usia, jenis kelamin, tingkat luka per orang, hingga posisi di kendaraan/trotoar). Pada proyek ini, tabel *Casualty* **tetap digunakan** pada tahap Struktur Data (verifikasi 127.883 baris & 100% kecocokan `collision_index`) dan tahap EDA *Outlier* (fitur `age_of_casualty` pada Tabel 3), namun **tidak digabungkan ke dataset akhir *Pre-processing***. Fokus utama analisis adalah per satu kejadian kecelakaan (101.525 baris); jika Tabel *Casualty* digabung langsung dengan baris individu korban, satu kecelakaan berkorban banyak akan terhitung berulang kali, sedangkan total korban dan tingkat keparahannya sudah terwakili oleh `number_of_casualties` dan `collision_severity` di tabel *Collision*.
 
 ---
 
@@ -63,7 +63,7 @@ Deteksi nilai ekstrem (*outlier*) dilakukan pada 6 fitur numerik utama menggunak
 | `engine_capacity_cc` | 1.200 | 1.984 | 3.160 | 6.146 | 4,42% | 48.000 cc |
 | `age_of_casualty` | 23,0 | 53,0 | 98,0 | 7 | 0,01% | 105 tahun |
 
-Seluruh *outlier* tersebut **tetap dipertahankan (tidak dihapus)** karena merupakan kejadian nyata di lapangan—seperti tabrakan beruntun 17 kendaraan, kecelakaan bus dengan 142 korban, truk bermesin besar, dan jalan tol berbatas 70 mph—bukan kesalahan input. Selain itu, pada `number_of_casualties`, nilai Q1 dan Q3 sama-sama 1 sehingga setiap kecelakaan dengan korban 2 orang atau lebih langsung terhitung sebagai outlier oleh rumus IQR; jika dihapus, hampir 18% kasus kecelakaan nyata akan hilang.
+Seluruh *outlier* tersebut **tetap dipertahankan (tidak dihapus)** karena merupakan kejadian nyata di lapangan seperti tabrakan beruntun 17 kendaraan, kecelakaan bus dengan 142 korban, truk bermesin besar, dan jalan tol berbatas 70 mph, bukan kesalahan input. Selain itu, pada `number_of_casualties`, nilai Q1 dan Q3 sama-sama 1 sehingga setiap kecelakaan dengan korban 2 orang atau lebih langsung terhitung sebagai outlier oleh rumus IQR. Jika dibuang, hampir 18% kasus kecelakaan nyata akan hilang.
 
 ![Gambar 3](output_grafik/3_eda_boxplot_outlier.png)
 
