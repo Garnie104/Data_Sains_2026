@@ -34,10 +34,12 @@ Dari total **99 kolom asli** yang tersebar di ketiga tabel (44 di *Collision*, 3
 | **Collision** | `light_conditions`, `weather_conditions`, `road_surface_conditions` | Faktor lingkungan, cahaya, cuaca, dan kondisi permukaan jalan. |
 | **Vehicle** (2 kolom) | `age_of_driver` → `avg_driver_age`, `engine_capacity_cc` → `avg_engine_cc` | Mengukur rata-rata usia pengemudi dan kapasitas mesin kendaraan per kejadian. |
 
-**Alasan ~84 kolom lainnya tidak digunakan:**
+**Alasan ~84 kolom lainnya dihilangkan:**
 1. **Terlalu banyak data kosong (`-1`) atau kolom lama (`*_historic`):** Misalnya `local_authority_district` dan `age_of_vehicle` (100% berisi `-1`), serta kolom `*_historic` dan `special_conditions_at_site` (~86%–88% kosong).
 2. **Redundan dan rawan kebocoran data (*data leakage*):** Misalnya `enhanced_severity_collision` (13,47% kosong dan isinya mengulang `collision_severity`) serta `age_band_of_driver` (sudah diwakili `age_of_driver`).
-3. **Terlalu spesifik atau hanya label kode wilayah:** Seperti `collision_ref_no`, ribuan kode wilayah kecil (`lsoa`), merek kendaraan (`generic_make_model` yang punya 777 variasi), serta rincian per korban di *Casualty* karena fokus analisis kita adalah per satu kejadian kecelakaan.
+3. **Terlalu spesifik atau hanya label kode wilayah:** Seperti `collision_ref_no`, ribuan kode wilayah kecil (`lsoa`), dan merek kendaraan (`generic_make_model` yang punya 777 variasi).
+
+**Catatan Khusus Tabel *Casualty*:** Tabel *Casualty* berisi rincian profil tiap individu korban (peran korban sebagai pengemudi/penumpang/pejalan kaki, usia, jenis kelamin, tingkat luka per orang, hingga posisi di kendaraan/trotoar). Pada proyek ini, tabel *Casualty* **tetap digunakan** pada tahap Struktur Data (verifikasi 127.883 baris & 100% kecocokan `collision_index`) dan tahap EDA *Outlier* (fitur `age_of_casualty` pada Tabel 3), namun **tidak digabungkan ke dataset akhir *Pre-processing***. Alasannya, fokus utama analisis adalah per satu kejadian kecelakaan (101.525 baris); jika digabung langsung dengan baris individu korban, satu kecelakaan dengan banyak korban akan terhitung berulang kali, sedangkan total korban dan tingkat keparahannya sudah terwakili oleh `number_of_casualties` dan `collision_severity` di tabel *Collision*.
 
 ---
 
