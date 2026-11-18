@@ -115,4 +115,8 @@ Teknik *One-Hot Encoding* diterapkan menggunakan `OneHotEncoder` pada lima fitur
 ---
 
 ## 4. Kesimpulan
-Dari total 99 kolom asli pada Dataset *UK Road Safety 2025* (101.525 kejadian), dipilih 15 parameter utama yang paling bersih dan relevan, kemudian dieksplorasi melalui EDA (distribusi, *outlier* IQR, dan korelasi 11 fitur) serta diolah melalui *merging*, pembersihan kode `-1`, validasi, penghapusan `age_of_vehicle`, imputasi median/modus, hingga *One-Hot Encoding*. Dataset akhir berukuran **101.525 baris × 39 kolom** sudah bersih sempurna (0 duplikasi, 0 nilai kosong) dan siap digunakan untuk tahap pemodelan *Machine Learning* pada UAS.
+Dari total 99 kolom asli pada Dataset *UK Road Safety 2025* (101.525 kejadian), dipilih 15 parameter utama yang paling bersih dan relevan, kemudian dieksplorasi melalui EDA (distribusi, *outlier* IQR, dan korelasi 11 fitur) serta diolah melalui *merging*, pembersihan kode `-1`, validasi, penghapusan `age_of_vehicle`, imputasi median/modus, hingga *One-Hot Encoding*. Dataset akhir berukuran **101.525 baris × 39 kolom** sudah bersih sempurna (0 duplikasi, 0 nilai kosong) dan siap digunakan.
+
+## Referensi
+1. Department for Transport (DfT). (2025). *Road Safety Open Dataset 2025: Collision, Vehicle, Casualty, and Data Guide*. United Kingdom.
+2. Nasution, S. M. & Tim Pengajar Data Sains. (2026). *Materi Kuliah Data Sains dan Analisis: Week 3–6 & Modul LMS Pertemuan 01, 04–07, 09*.
