@@ -8,6 +8,7 @@ Dokumen ini merangkum hasil analisis instruksi, klarifikasi ruang lingkup, pemet
 - **Sumber Instruksi Asli:** [Instruksi.txt](file:///c:/Users/LENOVO/Documents/Data%20Sains/Tugas/Tugas%20Besar/Instruksi.txt)
 - **Fungsi Tugas:** Laporan Tugas Besar sebagai **pengganti UTS**.
 - **Format Pengumpulan:** Dikumpulkan dalam **bentuk fisik (*hardcopy*)** (sehingga desain laporan PDF perlu rapi, jelas dibaca saat dicetak, dengan margin dan ukuran grafik/tabel yang sesuai untuk cetak).
+- **Format Laporan Acuan:** Menggunakan **versi ringkas** (`Laporan_Ringkas_Tugas_Besar_Data_Sains.*` — langsung ke inti materi data sains tanpa pengantar/metodologi berbelit-belit). Dokumen versi lengkap diarsipkan terpisah pada folder `Hasil jadi/Arsip Laporan Lengkap/`.
 - **Deadline & Presentasi:**
   - Deadline pengerjaan: **1 minggu**.
   - Presentasi dimulai **tanggal 20** (perlu membuat janji jadwal sendiri).
