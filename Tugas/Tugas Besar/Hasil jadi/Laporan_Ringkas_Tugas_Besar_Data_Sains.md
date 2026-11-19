@@ -6,12 +6,16 @@ Disusun oleh:
 - Muhammad Al Qarnie (101032330043)
 - Daffa Hermansyah (101032330090)
 
-2026
+**Program Studi S1 Teknik Komputer**  
+**Fakultas Teknik Elektro**  
+**Telkom University**  
+**Bandung**  
+**2026**
 
 ---
 
 ## 1. Struktur Data
-Dataset *UK Road Safety Statistics* tahun 2025 terdiri dari tiga tabel utama berformat CSV dan satu file kamus data (*Data Guide* `.xlsx`). Seluruh 101.525 kejadian pada tabel *Collision* cocok **100%** dengan tabel *Vehicle* dan *Casualty* melalui kunci penghubung `collision_index`. Setiap kejadian yang tercatat melibatkan minimal satu korban manusia, mulai dari luka ringan (*Slight*), luka serius (*Serious*), hingga meninggal dunia (*Fatal*).
+Dataset *UK Road Safety Statistics* tahun 2025 terdiri dari tiga tabel utama berformat CSV dan satu file kamus data (*Data Guide* `.xlsx`). Seluruh 101.525 kejadian pada tabel *Collision* terhubung dengan tabel *Vehicle* dan *Casualty* melalui kunci penghubung `collision_index`. Setiap kejadian yang tercatat melibatkan minimal satu korban manusia, mulai dari luka ringan (*Slight*), luka serius (*Serious*), hingga meninggal dunia (*Fatal*).
 
 | Tabel | Baris | Kolom | Kunci Penghubung | Cakupan Data |
 | :--- | :---: | :---: | :--- | :--- |
@@ -19,7 +23,7 @@ Dataset *UK Road Safety Statistics* tahun 2025 terdiri dari tiga tabel utama ber
 | **Vehicle** | 183.948 | 32 | `collision_index` | Jenis kendaraan, kapasitas mesin, profil pengemudi. |
 | **Casualty** | 127.883 | 23 | `collision_index` | Usia, jenis kelamin, tingkat luka korban. |
 
-Pada dataset ini, nilai **`-1`** menandakan data kosong atau tidak tersedia (*missing or out of range*). Karena dataset berbentuk data tabel (tabular), teknik pengolahan citra seperti *Image Segmentation* tidak diterapkan.
+Pada dataset ini, nilai **`-1`** menandakan data kosong atau tidak tersedia. Karena dataset berbentuk data tabel (tabular), teknik pengolahan citra seperti *Image Segmentation* tidak diterapkan.
 
 ### 1.1 Pemilihan Parameter dari Total 99 Kolom Asli
 Dari total **99 kolom asli** yang tersebar di ketiga tabel (44 di *Collision*, 32 di *Vehicle*, dan 23 di *Casualty*), tidak semuanya perlu dipakai. Kita **hanya memilih 15 parameter utama** (13 kolom dari *Collision* ditambah 2 kolom ringkasan dari *Vehicle*, plus kolom turunan `month` dari `date`).
@@ -35,8 +39,8 @@ Dari total **99 kolom asli** yang tersebar di ketiga tabel (44 di *Collision*, 3
 | **Vehicle** (2 kolom) | `age_of_driver` → `avg_driver_age`, `engine_capacity_cc` → `avg_engine_cc` | Mengukur rata-rata usia pengemudi dan kapasitas mesin kendaraan per kejadian. |
 
 **Alasan ~84 kolom lainnya dihilangkan:**
-1. **Terlalu banyak data kosong (`-1`) atau kolom lama (`*_historic`):** Misalnya `local_authority_district` dan `age_of_vehicle` (100% berisi `-1`), serta kolom `*_historic` dan `special_conditions_at_site` (~86%–88% kosong).
-2. **Redundan dan rawan kebocoran data (*data leakage*):** Misalnya `enhanced_severity_collision` (13,47% kosong dan isinya mengulang `collision_severity`) serta `age_band_of_driver` (sudah diwakili `age_of_driver`).
+1. **Terlalu banyak data kosong (`-1`) atau kolom lama (`*_historic`):** Misalnya `local_authority_district` dan `age_of_vehicle` (seluruh datanya berisi `-1`), serta kolom `*_historic` dan `special_conditions_at_site` (~86%–88% kosong).
+2. **Redundan dan rawan kebocoran data:** Misalnya `enhanced_severity_collision` (13,47% kosong dan isinya mengulang `collision_severity`) serta `age_band_of_driver` (sudah diwakili `age_of_driver`).
 3. **Terlalu spesifik atau hanya label kode wilayah:** Seperti `collision_ref_no`, ribuan kode wilayah kecil (`lsoa`), dan merek kendaraan (`generic_make_model` yang punya 777 variasi).
 
 Tabel *Casualty* berisi rincian profil tiap individu korban (peran korban sebagai pengemudi/penumpang/pejalan kaki, usia, jenis kelamin, tingkat luka per orang, hingga posisi di kendaraan/trotoar). Pada proyek ini, tabel *Casualty* **tetap digunakan** pada tahap Struktur Data (verifikasi 127.883 baris & 100% kecocokan `collision_index`) dan tahap EDA *Outlier* (fitur `age_of_casualty` pada Tabel 3), namun **tidak digabungkan ke dataset akhir *Pre-processing***. Fokus utama analisis adalah per satu kejadian kecelakaan (101.525 baris); jika Tabel *Casualty* digabung langsung dengan baris individu korban, satu kecelakaan berkorban banyak akan terhitung berulang kali, sedangkan total korban dan tingkat keparahannya sudah terwakili oleh `number_of_casualties` dan `collision_severity` di tabel *Collision*.
@@ -46,13 +50,13 @@ Tabel *Casualty* berisi rincian profil tiap individu korban (peran korban sebaga
 ## 2. Exploratory Data Analysis (EDA)
 
 ### 2.1 Distribusi Keparahan, Pola Waktu, dan Kondisi Jalan
-Dari 101.525 kecelakaan selama tahun 2025, mayoritas adalah kecelakaan ringan (*Slight*) sebanyak **74.881 kasus (73,76%)**, serius (*Serious*) **25.191 kasus (24,81%)**, dan fatal (*Fatal*) **1.453 kasus (1,43%)**. Rata-rata tiap kecelakaan melibatkan 1,81 kendaraan dan 1,26 korban. Sebanyak **66,14%** kejadian (67.148 kasus) terjadi di area perkotaan (*urban*) dan **48,93%** (49.673 kasus) berada di jalan dengan batas kecepatan 30 mph. Berdasarkan waktu, kecelakaan memuncak pada hari **Jumat (16.811 kasus)** dan pukul **17:00 (8.877 kasus)** saat jam pulang kerja, serta paling rendah pada hari **Minggu (11.197 kasus)** dan pukul **04:00 pagi (634 kasus)**.
+Dari 101.525 kecelakaan selama tahun 2025, mayoritas adalah kecelakaan ringan sebanyak **74.881 kasus (73,76%)**, serius **25.191 kasus (24,81%)**, dan fatal **1.453 kasus (1,43%)**. Rata-rata tiap kecelakaan melibatkan 1,81 kendaraan dan 1,26 korban. Sebanyak **66,14%** kejadian (67.148 kasus) terjadi di area perkotaan dan **48,93%** (49.673 kasus) berada di jalan dengan batas kecepatan 30 mph. Berdasarkan waktu, kecelakaan memuncak pada hari **Jumat (16.811 kasus)** dan pukul **17:00 (8.877 kasus)** saat jam pulang kerja, serta paling rendah pada hari **Minggu (11.197 kasus)** dan pukul **04:00 pagi (634 kasus)**.
 
 ![Gambar 1](output_grafik/1_eda_distribusi_keparahan_hari.png)
 ![Gambar 2](output_grafik/2_eda_tren_jam.png)
 
 ### 2.2 Deteksi Outlier (Metode IQR dan Boxplot)
-Deteksi nilai ekstrem (*outlier*) dilakukan pada 6 fitur numerik utama menggunakan metode *Interquartile Range* (IQR) dan *Boxplot* dengan mengecualikan kode `-1`.
+Deteksi *outlier* dilakukan pada 6 fitur numerik utama menggunakan metode *Interquartile Range* (IQR) dan *Boxplot* dengan mengecualikan kode `-1`.
 
 | Fitur Numerik | Q1 | Q3 | Batas Atas | Jumlah Outlier | Persentase | Maksimum |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -78,10 +82,10 @@ Tiga hubungan terkuat pada matriks korelasi adalah: (1) `speed_limit` vs `urban_
 
 ## 3. Data Pre-processing
 
-### 3.1 Seleksi dan Penggabungan Data (*Merging*)
+### 3.1 Seleksi dan Penggabungan Data
 Karena satu kecelakaan di tabel *Collision* dapat melibatkan lebih dari satu kendaraan di tabel *Vehicle*, maka data `age_of_driver` dan `engine_capacity_cc` pada tabel *Vehicle* diringkas terlebih dahulu dengan menghitung rata-ratanya per `collision_index` (`groupby`). Hasil ringkasan tersebut digabungkan ke 13 kolom pilihan dari tabel *Collision* sehingga menghasilkan ukuran awal **101.525 baris × 16 kolom** (termasuk kolom tambahan `month` dari `date`).
 
-### 3.2 Pembersihan dan Validasi Data (*Cleaning & Validation*)
+### 3.2 Pembersihan dan Validasi Data
 1. **Cek duplikasi:** Ditemukan **0 baris ganda** pada kunci `collision_index`.
 2. **Konversi kode `-1`:** Seluruh nilai `-1` diubah menjadi `NaN` agar tidak terbaca sebagai angka minus.
 3. **Validasi rentang nilai:** Memastikan `speed_limit` berada pada rentang 1–70 mph, `avg_driver_age` pada rentang 10–105 tahun, dan `urban_or_rural_area` hanya bernilai 1 (*Urban*) atau 2 (*Rural*) sehingga 4 baris berkode 3 (*Unallocated*) ikut dibersihkan menjadi `NaN`.
@@ -94,9 +98,9 @@ Untuk mengisi data yang kosong setelah proses validasi, digunakan **Median** pad
 | :--- | :---: | :---: | :--- |
 | `avg_engine_cc` (Numerik) | 13.670 | 13,46% | Median = `1.560 cc` |
 | `avg_driver_age` (Numerik) | 6.087 | 6,00% | Median = `40 tahun` |
-| `road_surface_conditions` (Kategori) | 634 | 0,62% | Modus = Kode `1` (*Dry* / Kering) |
-| `light_conditions` (Kategori) | 16 | 0,02% | Modus = Kode `1` (*Daylight* / Terang) |
-| `urban_or_rural_area` (Kategori) | 4 | < 0,01% | Modus = Kode `1` (*Urban* / Perkotaan) |
+| `road_surface_conditions` (Kategori) | 634 | 0,62% | Modus = Kode `1` (Kering) |
+| `light_conditions` (Kategori) | 16 | 0,02% | Modus = Kode `1` (Terang) |
+| `urban_or_rural_area` (Kategori) | 4 | < 0,01% | Modus = Kode `1` (Perkotaan) |
 
 Setelah tahap ini selesai, total *missing values* pada seluruh dataset menjadi **0**.
 
